@@ -1,2 +1,3 @@
-import 'package:flutter/material.dart';
-enum RestApiStatus {idle, loading, empty, success, error}
+// TODO: whole of enums that use in this app
+
+enum LoadingStatus {idle, loading, empty, success, error}
