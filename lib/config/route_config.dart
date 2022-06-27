@@ -5,6 +5,6 @@ import '../ui/screens/home/home_screen.dart';
 
 class RouteConfig {
   static Map<String, Widget Function(BuildContext)> routes = {
-    RouteNameCons.HOME_SCREEN_NAME: (context) => const HomeScreen(),
+    RouteNameCons.homeScreenRouteName: (context) => const HomeScreen(),
   };
 }
