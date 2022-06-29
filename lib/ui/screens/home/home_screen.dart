@@ -1,11 +1,10 @@
-import 'dart:async';
-
 import 'package:cryptocurrency_prices/main.dart';
 import 'package:cryptocurrency_prices/modules/models/crypto_currency_model.dart';
 import 'package:cryptocurrency_prices/modules/models/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:async';
 
 import '/constants/app_constants.dart';
 import '/modules/providers/crypto currencies_provider.dart';
@@ -18,14 +17,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Timer? timer;
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      Timer.periodic(const Duration(seconds: 5), (timer) {
+      context.read<CryptoCurrenciesProvider>().cryptoCurrencies();
+      timer = Timer.periodic(const Duration(seconds: 5), (timer) {
         context.read<CryptoCurrenciesProvider>().cryptoCurrencies();
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer!.cancel();
+    context.read<CryptoCurrenciesProvider>().streamCryptoList.close();
+    super.dispose();
   }
 
 
@@ -34,46 +43,45 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(AppConstants.titleScreenConst)),
-      body: Consumer<CryptoCurrenciesProvider>(
-        builder: (context, coin, child) {
-          switch (coin.status) {
-            case LoadingStatus.loading:
-              return const Center(child: CircularProgressIndicator());
-            case LoadingStatus.empty:
-              return Center(
-                child: Text(
-                  'Empty State',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              );
-            case LoadingStatus.error:
-              return Center(
-                child: Text(
-                  'Error ${coin.errMsg}',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              );
-            case LoadingStatus.success:
-              return ListView.builder(
-                itemCount: coin.cryptoCurrenciesList.length,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Text(
-                      coin.cryptoCurrenciesList[index].rank!,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    title: Text(
-                      coin.cryptoCurrenciesList[index].price!,
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                  );
-                },
-              );
-            default:
-              return const Center(child: CircularProgressIndicator());
+      body: StreamBuilder<List<CryptoCurrencyModel>>(
+        stream: context.read<CryptoCurrenciesProvider>().streamCryptoList.stream,
+        builder: (context, AsyncSnapshot<List<CryptoCurrencyModel>> snapshot) {
+          List<CryptoCurrencyModel>? cryptoData = snapshot.data;
+          if(snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if(snapshot.hasData == true) {
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: cryptoData!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Text(
+                    cryptoData[index].rank.toString(),
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  title: Text(
+                    cryptoData[index].symbol!,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  subtitle: Text(
+                    cryptoData[index].priceDate!,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  trailing: Text(
+                    cryptoData[index].price.toString(),
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                );
+              },
+            );
+          } else {
+            return Text(
+              'not data',
+              style: Theme.of(context).textTheme.headline4,
+            );
           }
-        },
+        }
       ),
     );
   }

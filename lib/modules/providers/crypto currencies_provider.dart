@@ -13,6 +13,9 @@ import '../models/enums.dart';
 class CryptoCurrenciesProvider with ChangeNotifier {
   LoadingStatus status = LoadingStatus.idle;
 
+  StreamController<List<CryptoCurrencyModel>> _streamCryptoList = StreamController();
+  StreamController<List<CryptoCurrencyModel>> get streamCryptoList => _streamCryptoList;
+
   String? _errMsg;
   String get errMsg => _errMsg!;
 
@@ -29,6 +32,7 @@ class CryptoCurrenciesProvider with ChangeNotifier {
       if(response.statusCode == 200) {
         List<dynamic> jsonList = convert.jsonDecode(response.body);
         _cryptoCurrenciesList = jsonList.map((thisone) => CryptoCurrencyModel.fromJson(thisone)).toList();
+        _streamCryptoList.sink.add(_cryptoCurrenciesList);
         status = LoadingStatus.success;
       } else {
         _errMsg = 'something went wrong res status code is => ${response.statusCode}.';
