@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cryptocurrency_prices">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="cryptocurrency_prices"
         android:name="${applicationName}"

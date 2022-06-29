@@ -7,4 +7,9 @@ class RestApiService {
   static Future<http.Response> getAllCryptoCurrencies() async {
     return await http.get(Uri.parse(_baseUrl));
   }
+
+  static Future<http.Response> getSingleCryptoCurrency(String cryptoId) async {
+    String url = '$_baseUrl&ids=$cryptoId';
+    return await http.get(Uri.parse(url));
+  }
 }
