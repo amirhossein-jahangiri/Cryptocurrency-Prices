@@ -2,6 +2,7 @@ import 'package:cryptocurrency_prices/modules/models/crypto_currency_model.dart'
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
+import 'dart:developer';
 
 import '/constants/app_constants.dart';
 import '/modules/providers/crypto currencies_provider.dart';
@@ -23,15 +24,18 @@ class _HomeScreenState extends State<HomeScreen> {
       context.read<CryptoCurrenciesProvider>().cryptoCurrencies();
       timer = Timer.periodic(const Duration(seconds: 5), (timer) {
         context.read<CryptoCurrenciesProvider>().cryptoCurrencies();
+        log('Update Data=====================');
       });
     });
     super.initState();
   }
 
+
+
   @override
   void dispose() {
     timer!.cancel();
-    context.read<CryptoCurrenciesProvider>().streamCryptoList.close();
+    context.watch<CryptoCurrenciesProvider>().streamCryptoList.close();
     super.dispose();
   }
 
@@ -70,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     trailing: Text(
                       cryptoData[index].price.toString(),
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   );
                 },

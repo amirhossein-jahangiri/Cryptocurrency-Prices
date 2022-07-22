@@ -1,10 +1,12 @@
 import 'dart:async';
-
-import 'package:cryptocurrency_prices/modules/models/crypto_currency_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../modules/providers/crypto currencies_provider.dart';
+import 'crypto_currency_details_widgets/crypto_item_widget.dart';
+import '/modules/models/crypto_currency_model.dart';
+import '../../../constants/app_constants.dart';
 
 class CryptoCurrencyDetailsScreen extends StatefulWidget {
   const CryptoCurrencyDetailsScreen({Key? key}) : super(key: key);
@@ -17,58 +19,59 @@ class CryptoCurrencyDetailsScreen extends StatefulWidget {
 class _CryptoCurrencyDetailsScreenState extends State<CryptoCurrencyDetailsScreen> {
   Timer? timer;
 
+  CryptoCurrenciesProvider cryptoProvider = CryptoCurrenciesProvider();
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
       final String cryptoId = ModalRoute.of(context)!.settings.arguments as String;
       timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-        context.read<CryptoCurrenciesProvider>().singleCryptoCurrency(cryptoId);
+        if(mounted) {}
+        cryptoProvider.singleCryptoCurrency(cryptoId);
       });
     });
     super.initState();
   }
 
+
   @override
   void dispose() {
-    context.read<CryptoCurrenciesProvider>().streamCrypto.close();
+    cryptoProvider.streamCrypto.close();
     timer!.cancel();
     super.dispose();
   }
 
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       appBar: AppBar(),
       body: StreamBuilder<CryptoCurrencyModel>(
-        stream: context.read<CryptoCurrenciesProvider>().streamCrypto.stream,
-        builder: (context, AsyncSnapshot snapshot) {
-          CryptoCurrencyModel? cryptoData = snapshot.data;
-          if(snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if(snapshot.hasData == true) {
-            return ListView(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              children: [
-                Text(
-                  cryptoData!.name!,
-                  style: Theme.of(context).textTheme.headline5,
+          stream: cryptoProvider.streamCrypto.stream,
+          builder: (context, AsyncSnapshot snapshot) {
+            CryptoCurrencyModel? cryptoData = snapshot.data;
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasData == true) {
+              return ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                  vertical: 15.h,
                 ),
-                Text(
-                  cryptoData.symbol!,
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                Text(
-                  cryptoData.price.toString(),
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              ],
-            );
-          } else {
-            return const Center(child: Text('not data'));
-          }
-        }
-      ),
+                children: [
+                  CryptoItem(
+                    title: AppConstants.currencyItem,
+                    value: cryptoData!.currency!,
+                  ),
+                ],
+              );
+            } else {
+              return const Center(child: Text('not data'));
+            }
+          }),
     );
   }
 }
