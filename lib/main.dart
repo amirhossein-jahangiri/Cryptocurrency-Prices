@@ -26,7 +26,8 @@ class CryptoCurrency extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           title: 'Cryptocurrency Prices Application',
-          initialRoute: RouteNameCons.homeScreenRouteName,
+          debugShowCheckedModeBanner: false,
+          initialRoute: RouteNameCons.liveScreen,
           routes: RouteConfig.routes,
         );
       },
