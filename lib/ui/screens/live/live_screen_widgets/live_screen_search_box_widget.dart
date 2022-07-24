@@ -14,8 +14,8 @@ class LiveScreenSearchBox extends StatelessWidget {
       delegate: SliverChildListDelegate([
         Container(
           margin: EdgeInsets.symmetric(
-            horizontal: 20.w,
-            vertical: 5.h,
+            horizontal: 15.w,
+            vertical: 10.h,
           ),
           padding: EdgeInsets.symmetric(
             horizontal: 8.w,
@@ -24,34 +24,30 @@ class LiveScreenSearchBox extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
             border: Border.all(
-              color: const Color(0xFF7a7a83),
+              color: Theme.of(context).colorScheme.onPrimary,
               width: 1.0,
             ),
           ),
+          alignment: Alignment.center,
           child: TextField(
-            style: const TextStyle(
-              fontSize: 18.0,
-              color: Colors.white,
-            ),
-            cursorHeight: 25.h,
-            cursorColor: const Color(0xFF7a7a83),
+            style: Theme.of(context).textTheme.titleMedium,
+            cursorHeight: 22.h,
+            cursorColor: Theme.of(context).colorScheme.onPrimary,
             decoration: InputDecoration(
               prefixIcon: IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.search),
-                color: const Color(0xFF7a7a83),
+                iconSize: 21.r,
               ),
               suffixIcon: IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.tune),
-                color: const Color(0xFF7a7a83),
+                iconSize: 21.r,
               ),
               hintText: AppConstants.searchBoxHintText,
-              hintStyle: const TextStyle(
-                fontSize: 18.0,
-                color: Color(0xFF7a7a83),
+              hintStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
-              border: InputBorder.none,
             ),
           ),
         ),

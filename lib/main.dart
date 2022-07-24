@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'config/theme_config.dart';
 import 'constants/route_name_constants.dart';
 import 'config/route_config.dart';
 import 'modules/providers/crypto%20currencies_provider.dart';
@@ -37,6 +38,7 @@ class CryptoCurrency extends StatelessWidget {
         return MaterialApp(
           title: 'Cryptocurrency Prices Application',
           debugShowCheckedModeBanner: false,
+          theme: ThemeConfig.darkTheme,
           initialRoute: RouteNameCons.liveScreen,
           routes: RouteConfig.routes,
         );

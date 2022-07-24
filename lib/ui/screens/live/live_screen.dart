@@ -11,7 +11,6 @@ class LiveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xFF19191f),
       body: SafeArea(
         child: CustomScrollView(
           shrinkWrap: true,

@@ -19,8 +19,7 @@ class LiveScreenCryptoCurrenciesList extends StatelessWidget {
             vertical: 10.h,
           ),
           decoration: BoxDecoration(
-            color: const Color(0xFF202026),
-            //color: Colors.green,
+            color: Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(5.r),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -44,21 +43,17 @@ class LiveScreenCryptoCurrenciesList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
+                    Text(
                       'Bitcoin',
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.white,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     SizedBox(height: 8.h),
-                    const Text(
+                    Text(
                       'BTC',
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Color(0xFF71737a),
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ],
@@ -72,27 +67,21 @@ class LiveScreenCryptoCurrenciesList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    const FittedBox(
+                    FittedBox(
                       clipBehavior: Clip.none,
                       child: Text(
                         '\$22.000.0000',
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.white,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
                     SizedBox(height: 8.h),
-                    const FittedBox(
+                    FittedBox(
                       clipBehavior: Clip.none,
                       child: Text(
                         '+4.785',
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.white,
-                        ),
+                        style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ),
                   ],

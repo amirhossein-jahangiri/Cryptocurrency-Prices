@@ -14,22 +14,12 @@ class LiveScreenAppBar extends StatelessWidget {
       floating: true,
       forceElevated: true,
       toolbarHeight: 60.h,
-      backgroundColor: const Color(0xFF19191f),
-      elevation: 0.0,
-      centerTitle: true,
-      title: const Text(
-        AppConstants.appBarTitle,
-        style: TextStyle(
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+      titleTextStyle: Theme.of(context).textTheme.titleLarge,
+      title: const Text(AppConstants.appBarTitle),
       actions: [
         IconButton(
           onPressed: () {},
           icon: const Icon(Icons.notifications_none),
-          iconSize: 25.r,
-          color: const Color(0xFF7a7a83),
         )
       ],
     );
